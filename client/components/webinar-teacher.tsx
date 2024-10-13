@@ -2,6 +2,7 @@
 
 import React, { useState, useRef } from "react";
 import { WHIPClient } from "@eyevinn/whip-web-client";
+import { BACKEND_URL, FRONTEND_URL } from "@/app/page";
 
 export default function WebinarTeacher() {
   const [title, setTitle] = useState("");
@@ -13,16 +14,14 @@ export default function WebinarTeacher() {
 
   const startBroadcast = async () => {
     try {
-      const response = await fetch("http://localhost:3000/webinar", {
+      const response = await fetch(`${BACKEND_URL}/webinar`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title, description }),
       });
       const webinar = await response.json();
 
-      setWebinarInfo(
-        `Join webinar: http://localhost:3001/webinar/${webinar.id}`
-      );
+      setWebinarInfo(`Join webinar:${FRONTEND_URL}/webinar/${webinar.id}`);
 
       const iframeUrl = webinar.webRTCPlayback.url.replace(
         "webRTC/play",
